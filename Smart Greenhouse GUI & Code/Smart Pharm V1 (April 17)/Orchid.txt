@@ -1,0 +1,130 @@
+//======================== Relay Control (AI) ==========================================================================================================================
+
+	//========================= HUMIDIFER ================================================================================
+
+	if (humidity <= 85) // Change the value of minimum humidity depending on required parameters (default <= 85%)
+	{
+		digitalWrite(Humidifier, LOW); // Turns Humidifier Relay on
+		tft.setTextSize(2);
+		tft.setCursor(35, 230);
+		tft.setTextColor(RED);
+		tft.print("Humidifier Is Live.....");
+	}
+
+	if (humidity >= 99) // Change the value of maximum humidity depending on required parameters (default >= 99%)
+	{
+		digitalWrite(Humidifier, HIGH); // Turns Humidifer Relay off
+		tft.setCursor(35, 230);
+		tft.print(" ");
+	}
+
+	//========================= SPRINKLERS ================================================================================
+
+	if (SoilmoistsensorValue >= 300)  // Change the value of minimum soil moisture depending on required parameters (default >= 300)
+	{
+		digitalWrite(Sprinklers, LOW); // Turns Sprinklers Relay on
+		digitalWrite(Humidifier, HIGH); // Turns Humidifer Relay off  (Wait for Sprinkler to turn off to turn Humidifier on)
+		tft.setTextSize(2);
+		tft.setCursor(35, 210);
+		tft.setTextColor(BLUE);
+		tft.print("Sprinklers Are Live.....");
+	}
+
+	if (SoilmoistsensorValue < 300) // Change the value of maximum soil moisture depending on required parameters (default < 300)
+	{
+		digitalWrite(Sprinklers, HIGH); // Turns Sprinklers Relay off
+		tft.setCursor(35, 210);
+		tft.print(" ");
+	}
+
+	//======================= COOLING FANS (Intake & Exhaust) ============================================================
+
+	if (temperature >= 30) // Change the value of maximum temperature (C) depending on required parameters (default >= 30c)
+	{
+		digitalWrite(CoolingingFans_Intake, LOW); // Turns Intake Cooling Fans Relay on
+		digitalWrite(CoolingingFans_Exhaust, LOW); // Turns Intake Cooling Fans Relay on
+		tft.setTextSize(2);
+		tft.setCursor(35, 250);
+		tft.setTextColor(BLUE);
+		tft.print("Fans Are Live.....");
+	}
+
+	if (temperature <= 18)   // Change the value of minimum temperature (C) depending on required parameters (default < 18c)
+	{
+		digitalWrite(CoolingingFans_Intake, HIGH); // Turns Intake Cooling Fans Relay off
+		digitalWrite(CoolingingFans_Exhaust, HIGH); // Turns Intake Cooling Fans Relay off
+		tft.setCursor(35, 250);
+		tft.print(" ");
+	}
+
+	//=========================== HEATER FANS ===========================================================================
+
+	if (temperature <= 17) // Change the value of minimum temperature (C) depending on required parameters (default <= 17c)
+	{
+		digitalWrite(HeatingFan, LOW); // Turns Heater Fans Relay on
+		tft.setTextSize(2);
+		tft.setCursor(35, 270);
+		tft.setTextColor(RED);
+		tft.print("Air Heaters Are Live.....");
+	}
+
+	if (temperature >= 25)   // Change the value of maximum temperature (C) depending on required parameters (default >= 25c)
+	{
+		digitalWrite(HeatingFan, HIGH); // Turns Heater Fans Relay off
+		tft.setCursor(35, 270);
+		tft.print(" ");
+	}
+
+	//========================= UV Lights ================================================================================ (Needs Revision)
+
+	//if (LightInt = 1) // Change the value of maximum Lighting exposure depending on required parameters (default = )
+	//{
+	//	digitalWrite(UVLights, LOW); // Turns UV Lights Relay on
+	//}
+
+	//if (LightInt = 0) // Change the value of maximum Lighting exposure depending on required parameters (default = )
+	//{
+	//	digitalWrite(UVLights, HIGH); // Turns UV Lights Relay off
+	//}
+
+
+	//========================= Soil Heater ================================================================================
+
+	if ((Soiltemp.getTempCByIndex(0)) <= 17) // Change the value of maximum Soil Temp depending on required parameters (default <= 17c )
+	{
+		digitalWrite(SoilHeater, LOW); // Turns Soil Heater Relay on
+		tft.setTextSize(2);
+		tft.setCursor(35, 190);
+		tft.setTextColor(RED);
+		tft.print("Soil Heater is Live.....");
+	}
+
+	if ((Soiltemp.getTempCByIndex(0)) >= 25) // Change the value of maximum Soil Temp depending on required parameters (default >= 25c )
+	{
+		digitalWrite(SoilHeater, HIGH); // Turns Soil Heater Relay off
+		tft.setCursor(35, 190);
+		tft.print(" ");
+	}
+	
+	//=================================================================================================================================================================
+
+
+	//============== Title ================
+
+	tft.setTextSize(4);
+	tft.setCursor(85, 20);
+	tft.setTextColor(DarkGREEN);
+	tft.print("Orchid Habitat");
+
+	//======== Software Version ===========
+
+	tft.setTextSize(2);
+	tft.setCursor(330, 300);
+	tft.setTextColor(WHITE);
+	tft.print(FerniOS_Version);
+
+	//=====================================
+
+	delay(60000);
+	tft.fillRect(20, 55, 540, 450, BLACK);
+	Orchid();
